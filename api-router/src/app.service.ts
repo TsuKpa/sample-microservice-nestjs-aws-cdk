@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { TcpClientOptions, Transport } from '@nestjs/microservices';
+import { TcpClientOptions, Transport, ClientProxy } from '@nestjs/microservices';
 import { HealthCheckService, MicroserviceHealthIndicator } from '@nestjs/terminus';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class AppService {
@@ -16,7 +17,9 @@ export class AppService {
   constructor(
     private health: HealthCheckService,
     private tcp: MicroserviceHealthIndicator,
-    private configService: ConfigService
+    private configService: ConfigService,
+    @Inject('SERVICE_A') private clientA: ClientProxy,
+    @Inject('SERVICE_B') private clientB: ClientProxy,
   ) {
     this.serviceA = {
       host: this.configService.get<string>('SERVICE_A_HOST') || 'localhost',
@@ -50,5 +53,13 @@ export class AppService {
         timeout: 800
       }),
     ]);
+  }
+
+  async pingClientA() {
+    return await lastValueFrom<string>(this.clientA.send({cmd: 'ping'}, {}))
+  }
+
+  async pingClientB() {
+    return await lastValueFrom<string>(this.clientB.send({cmd: 'ping'}, {}))
   }
 }

@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  service-a:
+    build:
+      context: ./service-a
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    networks:
+      - my-network
+  service-b:
+    build:
+      context: ./service-b
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3002"
+    networks:
+      - my-network
+  api-router:
+    build:
+      context: ./api-router
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge

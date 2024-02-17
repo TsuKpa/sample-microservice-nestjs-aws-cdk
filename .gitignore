@@ -2,6 +2,7 @@
 /api-router/dist
 /service-a/dist
 /service-b/dist
+/aws/node_modules
 /node_modules
 /build
 
