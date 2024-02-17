@@ -9,8 +9,8 @@ async function bootstrap() {
     {
       transport: Transport.TCP,
       options: {
-        host: 'localhost',
-        port: 3000,
+        host: process.env.HOST || 'localhost',
+        port: 3001,
       },
     },
   );

@@ -1,6 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-import { ApiResponse } from '@nestjs/swagger';
 
 @Controller()
 export class AppController {
@@ -19,5 +18,15 @@ export class AppController {
   @Get('/ping-b')
   async pingServiceB() {
     return await this.appService.pingServiceB();
+  }
+
+  @Get('/ping-tcp-a')
+  async pingClientA() {
+    return await this.appService.pingClientA();
+  }
+
+  @Get('/ping-tcp-b')
+  async pingClientB() {
+    return await this.appService.pingClientB();
   }
 }
